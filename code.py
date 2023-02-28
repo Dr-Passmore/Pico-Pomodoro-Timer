@@ -1,12 +1,50 @@
+#imports
 import time
-from machine import Pin, ADC, PWM
+from machine import Pin, PWM
 from neopixel import NeoPixel
 
+#Pin definitions
 strip = NeoPixel(Pin(28),15)
-
 buzzer = PWM(Pin(13))
+buzzer_led_on = Pin(17, Pin.OUT)
+buzzer_led_off = Pin(18, Pin.OUT)
+switch_off = Pin(14, Pin.IN)
+switch_mute = Pin(15, Pin.IN)
+switch_start = Pin(16, Pin.IN)
 
+buzzer_status = True
+
+def mute():
+    global buzzer_status
+    if buzzer_status == True:
+        buzzer_status = False
+    else:
+        buzzer_status = True
+    time.sleep(1)
+    
+
+while True:
+    
+    if switch_off.value() == 1:
+        print("off switch")
+    if switch_mute.value() == 1:
+        print("mute")
+    if switch_start.value() == 1:
+        print("start switch")
+    
+    if buzzer_status == True:
+        buzzer_led_on.value(1)
+        buzzer_led_off.value(0)
+    elif buzzer_status == False:
+        buzzer_led_on.value(0)
+        buzzer_led_off.value(1)
+    while switch_mute.value() == 1:
+        mute()
+    time.sleep(0.1)
+        
+'''
 buzzer.freq(1000)
+
 
 buzzer.duty_u16(10000)
 
@@ -17,3 +55,7 @@ buzzer.duty_u16(0)
 strip[0] = (255, 0, 0)
 
 strip.write()
+
+buzzer_led_on.value(1)
+buzzer_led_off.value(1)'''
+
