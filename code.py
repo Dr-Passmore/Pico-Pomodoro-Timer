@@ -15,11 +15,27 @@ switch_start = Pin(16, Pin.IN)
 buzzer_status = True
 
 def mute():
+    '''
+    Function mutes the buzzer. 
+    buzzer_status is checked and set as opposite the current value.
+    '''
     global buzzer_status
     if buzzer_status == True:
         buzzer_status = False
+        time.sleep(1)
     else:
         buzzer_status = True
+        buzzer.freq(1000)
+        buzzer.duty_u16(10000)
+        time.sleep(1)
+        buzzer.duty_u16(0)
+    
+    
+def off():
+    '''Switches off the Pomodoro timer, switching off all leds'''
+    strip[0] = (0, 0, 0)
+    strip.write()
+    buzzer.duty_u16(0)
     time.sleep(1)
     
 
@@ -40,6 +56,8 @@ while True:
         buzzer_led_off.value(1)
     while switch_mute.value() == 1:
         mute()
+    while switch_off.value() == 1:
+        off()
     time.sleep(0.1)
         
 '''
