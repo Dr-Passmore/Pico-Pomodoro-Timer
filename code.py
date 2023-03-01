@@ -33,11 +33,26 @@ def mute():
     
 def off():
     '''Switches off the Pomodoro timer, switching off all leds'''
-    strip[0] = (0, 0, 0)
+    strip.fill((0, 0, 0))
     strip.write()
     buzzer.duty_u16(0)
     time.sleep(1)
     
+def pomodoro():
+    '''
+    Pomodoro timer 
+    '''
+    working_mode = True
+    work = 1500
+    rest = 300
+    while switch_off.value() != 1:
+        if working_mode == True:
+            strip.fill((255, 0, 0))
+            strip.write()
+            #work / 16
+        
+
+
 
 while True:
     
@@ -56,6 +71,8 @@ while True:
         buzzer_led_off.value(1)
     while switch_mute.value() == 1:
         mute()
+    while switch_start.value() == 1:
+        pomodoro()
     while switch_off.value() == 1:
         off()
     time.sleep(0.1)
