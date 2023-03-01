@@ -43,12 +43,38 @@ def pomodoro():
     Pomodoro timer 
     '''
     working_mode = True
-    work = 1500
-    rest = 300
+    work = 15
+    rest = 3
+    countdown = work
     while switch_off.value() != 1:
         if working_mode == True:
             strip.fill((255, 0, 0))
             strip.write()
+            if countdown != 0:
+                countdown -= 1
+                time.sleep(1)
+            else:
+                working_mode = False
+                countdown = rest
+                buzzer.freq(1000)
+                buzzer.duty_u16(10000)
+                time.sleep(0.5)
+                buzzer.duty_u16(0)
+        else:
+            strip.fill((0, 255, 0))
+            strip.write()
+            if countdown != 0:
+                countdown -= 1
+                time.sleep(1)
+            else:
+                working_mode = True
+                countdown = work
+                buzzer.freq(500)
+                buzzer.duty_u16(10000)
+                time.sleep(0.5)
+                buzzer.duty_u16(0)
+                
+                
             #work / 16
         
 
