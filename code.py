@@ -11,6 +11,7 @@ buzzer_led_off = Pin(18, Pin.OUT)
 switch_off = Pin(14, Pin.IN)
 switch_mute = Pin(15, Pin.IN)
 switch_start = Pin(16, Pin.IN)
+switch_meeting = Pin(12, Pin.IN)
 
 buzzer_status = True
 
@@ -46,7 +47,7 @@ def pomodoro():
     work = 15
     rest = 3
     countdown = work
-    while switch_off.value() != 1:
+    while switch_off.value() != 1 or switch_meeting.value() != 0:
         if working_mode == True:
             strip.fill((255, 0, 0))
             strip.write()
@@ -73,12 +74,16 @@ def pomodoro():
                 buzzer.duty_u16(10000)
                 time.sleep(0.5)
                 buzzer.duty_u16(0)
-                
+    if switch_off.value() == 1:
+        off()
+    if switch_meeting.value() == 1:
+        meeting()            
                 
             #work / 16
         
 
-
+def meeting():
+    print("test")
 
 while True:
     
